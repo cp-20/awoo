@@ -4,8 +4,8 @@
     "mongodb": "npm:mongodb@7.0.0"
   },
   "tasks": {
-    "start": "deno run -A --unstable-kv main.tsx",
-    "dev": "deno run -A --unstable-kv --watch main.tsx"
+    "start": "deno run -A main.tsx",
+    "dev": "deno run -A --watch main.tsx"
   },
   "compilerOptions": {
     "jsx": "precompile",
