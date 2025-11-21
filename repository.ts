@@ -1,3 +1,5 @@
+import { Collection, Db, MongoClient } from "mongodb";
+
 type MaybePromise<T> = T | Promise<T>;
 
 interface Repository {
@@ -5,29 +7,47 @@ interface Repository {
   getCount(): MaybePromise<number>;
 }
 
-class KVRepository implements Repository {
-  private kv: Deno.Kv;
-  private key: Deno.KvKey;
+interface CounterDocument {
+  _id: string;
+  count: number;
+}
 
-  constructor(kv: Deno.Kv, key: Deno.KvKey) {
-    this.kv = kv;
-    this.key = key;
+class MongoRepository implements Repository {
+  private collection: Collection<CounterDocument>;
+  private counterId: string;
+
+  constructor(collection: Collection<CounterDocument>, counterId: string) {
+    this.collection = collection;
+    this.counterId = counterId;
   }
 
-  public async increment() {
-    const result = await this.kv.atomic().sum(this.key, 1n).commit();
-    if (!result.ok) {
-      console.error("Failed to increment counter in KV store");
+  public async increment(): Promise<void> {
+    try {
+      await this.collection.updateOne(
+        { _id: this.counterId },
+        { $inc: { count: 1 } },
+        { upsert: true },
+      );
+    } catch (error) {
+      console.error("Failed to increment counter in MongoDB", error);
     }
   }
 
   public async getCount(): Promise<number> {
-    const result = await this.kv.get<number>(this.key);
-    return result.value ?? 0;
+    const result = await this.collection.findOne({ _id: this.counterId });
+    return result?.count ?? 0;
   }
 }
 
-export const repository: Repository = new KVRepository(
-  await Deno.openKv(),
-  ["awoo-counter"],
+const mongoUrl = Deno.env.get("MONGODB_URL") || "mongodb://localhost:27017";
+const dbName = Deno.env.get("MONGODB_DB") || "awoo";
+
+const client = new MongoClient(mongoUrl);
+await client.connect();
+const db: Db = client.db(dbName);
+const collection = db.collection<CounterDocument>("counters");
+
+export const repository: Repository = new MongoRepository(
+  collection,
+  "awoo-counter",
 );

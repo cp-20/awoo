@@ -1,6 +1,7 @@
 {
   "imports": {
-    "hono": "jsr:@hono/hono@^4.10.6"
+    "hono": "jsr:@hono/hono@^4.10.6",
+    "mongodb": "npm:mongodb@7.0.0"
   },
   "tasks": {
     "start": "deno run -A --unstable-kv main.tsx",
