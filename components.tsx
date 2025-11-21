@@ -13,7 +13,7 @@ export const Main: FC<Props> = ({ counter }) => {
         <title>:awoo:</title>
         <meta property="og:title" content=":awoo:" />
         <meta property="og:image" content="https://awoo.trap.show/awoo.webp" />
-        <meta name="twitter:card" content="summary_image" />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content=":awoo:" />
         <meta name="twitter:image" content="https://awoo.trap.show/awoo.webp" />
 
