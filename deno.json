@@ -3,7 +3,8 @@
     "hono": "jsr:@hono/hono@^4.10.6"
   },
   "tasks": {
-    "start": "deno run --allow-net main.ts"
+    "start": "deno run -A --unstable-kv main.tsx",
+    "dev": "deno run -A --unstable-kv --watch main.tsx"
   },
   "compilerOptions": {
     "jsx": "precompile",
