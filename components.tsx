@@ -14,6 +14,9 @@ export const Main: FC<Props> = ({ counter }) => {
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" />
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" />
         <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" />
+
+        <meta name="og:title" content=":awoo:" />
+        <meta name="og:image" content="https://awoo.trap.show/awoo.webp" />
       </head>
       <body hx-ext="ws" ws-connect="/ws" class="flex flex-col items-center justify-center min-h-screen bg-red-50 text-stone-800 font-sans selection:bg-orange-200">
         <main class="flex flex-col items-center gap-12 p-8">
