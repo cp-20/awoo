@@ -25,6 +25,7 @@ export const Main: FC<Props> = ({ counter }) => {
             hx-post="/awoo"
             hx-target="#awoo-counter"
             hx-swap="innerHTML"
+            hx-on:click="const c = document.getElementById('awoo-counter'); c.innerText = parseInt(c.innerText) + 1"
             id="awoo-button"
             type="button"
             class="cursor-pointer p-0 border-0 bg-transparent transition-all active:scale-90 hover:scale-105 ease-out duration-150 outline-none focus-visible:ring-4 focus-visible:ring-orange-300 rounded-full"
