@@ -7,6 +7,10 @@ class PubSub {
     this.clients = new Set();
   }
 
+  getCount() {
+    return this.clients.size;
+  }
+
   subscribe(ws: WSContext<WebSocket>) {
     this.clients.add(ws);
   }

@@ -2,9 +2,10 @@ import { FC } from "hono/jsx";
 
 interface Props {
   counter: number;
+  clients: number;
 }
 
-export const Main: FC<Props> = ({ counter }) => {
+export const Main: FC<Props> = ({ counter, clients }) => {
   return (
     <html lang="ja">
       <head>
@@ -39,6 +40,11 @@ export const Main: FC<Props> = ({ counter }) => {
           >
             <img src="/awoo.webp" alt="awoo button" width={160} height={160} class="drop-shadow-xl" />
           </button>
+          <div id="awoo-clients">
+            {new Array(clients).fill(0).map(() => (
+              <img src="/awoo.webp" alt="" width="32" height="32" class="inline-block mr-2 mb-1" />
+            ))}
+          </div>
         </main>
       </body>
     </html>

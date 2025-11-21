@@ -10,17 +10,21 @@ app.use('/*', serveStatic({ root: './public' }))
 
 app.get("/", async (c) => {
   const counter = await repository.getCount();
-  return c.html(<Main counter={counter} />);
+  return c.html(<Main counter={counter} clients={pubsub.getCount()} />);
 });
+
+const clientElement = `<img src="/awoo.webp" alt="" width="32" height="32" class="inline-block mr-2 mb-1" /><span id="awoo-clients" class="align-middle font-mono font-bold text-stone-700"></span>`;
 
 app.get(
   '/ws',
   upgradeWebSocket(() => ({
     onOpen(_, ws) {
       pubsub.subscribe(ws);
+      pubsub.publish(`<div hx-swap-oob="innerHTML:#awoo-clients">${clientElement.repeat(pubsub.getCount())}</div>`);
     },
     onClose(_, ws) {
       pubsub.unsubscribe(ws);
+      pubsub.publish(`<div hx-swap-oob="innerHTML:#awoo-clients">${clientElement.repeat(pubsub.getCount())}</div>`);
     },
   }))
 );
