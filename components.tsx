@@ -11,6 +11,7 @@ export const Main: FC<Props> = ({ counter }) => {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>:awoo:</title>
+        <link rel="icon" href="/awoo.webp" type="image/webp" />
         <meta property="og:title" content=":awoo:" />
         <meta property="og:image" content="https://awoo.trap.show/awoo.webp" />
         <meta name="twitter:card" content="summary" />
