@@ -15,27 +15,57 @@ interface CounterDocument {
 class MongoRepository implements Repository {
   private collection: Collection<CounterDocument>;
   private counterId: string;
+  private localCount = 0;
+  private pendingDelta = 0;
+  private flushTimer: ReturnType<typeof setTimeout> | undefined;
+  private initPromise: Promise<void> | null = null;
 
   constructor(collection: Collection<CounterDocument>, counterId: string) {
     this.collection = collection;
     this.counterId = counterId;
   }
 
-  public async increment(): Promise<void> {
-    try {
-      await this.collection.updateOne(
+  private ensureInitialized() {
+    if (this.initPromise) return this.initPromise;
+
+    this.initPromise = (async () => {
+      const result = await this.collection.findOne({ _id: this.counterId });
+      this.localCount = result?.count ?? 0;
+    })();
+
+    return this.initPromise;
+  }
+
+  private flush() {
+    if (this.pendingDelta === 0) return;
+
+    const delta = this.pendingDelta;
+    this.pendingDelta = 0;
+    this.flushTimer = undefined;
+
+    this.collection
+      .updateOne(
         { _id: this.counterId },
-        { $inc: { count: 1 } },
+        { $inc: { count: delta } },
         { upsert: true },
-      );
-    } catch (error) {
-      console.error("Failed to increment counter in MongoDB", error);
-    }
+      )
+      .catch((error) => {
+        console.error("Failed to flush counter to MongoDB", error);
+      });
+  }
+
+  public async increment(): Promise<void> {
+    await this.ensureInitialized();
+    this.localCount++;
+    this.pendingDelta++;
+
+    if (this.flushTimer) clearTimeout(this.flushTimer);
+    this.flushTimer = setTimeout(() => this.flush(), 1000);
   }
 
   public async getCount(): Promise<number> {
-    const result = await this.collection.findOne({ _id: this.counterId });
-    return result?.count ?? 0;
+    await this.ensureInitialized();
+    return this.localCount;
   }
 }
 
