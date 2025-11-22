@@ -19,6 +19,9 @@ export const Main: FC<Props> = ({ counter, clients }) => {
         <meta name="twitter:title" content=":awoo:" />
         <meta name="twitter:image" content="https://awoo.trap.show/awoo.webp" />
 
+        <link rel="stylesheet" href="/style.css" />
+        <script src="/script.js" />
+
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" />
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" />
         <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" />
@@ -26,8 +29,9 @@ export const Main: FC<Props> = ({ counter, clients }) => {
       <body hx-ext="ws" ws-connect="/ws" class="flex flex-col items-center justify-center min-h-screen bg-red-50 text-stone-800 font-sans selection:bg-orange-200">
         <main class="flex flex-col items-center gap-12 p-8">
           <h1 class="text-6xl font-black tracking-tighter text-stone-900">: awoo :</h1>
-          <div class="flex flex-col items-center gap-4">
-            <div id="awoo-counter" class="text-5xl font-bold tabular-nums text-orange-600">{counter}</div>
+          <div class="flex flex-col items-center gap-4 relative">
+            <div id="awoo-counter" class="text-5xl font-bold tabular-nums text-orange-600 transition-transform duration-150">{counter}</div>
+            <div id="awoo-pops" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
           </div>
           <button
             hx-post="/awoo"

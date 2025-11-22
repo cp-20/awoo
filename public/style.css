@@ -1,0 +1,23 @@
+.awoo-pop {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  animation: awoo-pop-animation 1s ease-out forwards;
+  transform-origin: center;
+  left: 50%;
+  top: 50%;
+}
+
+@keyframes awoo-pop-animation {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + 160px * cos(var(--angle))),
+      calc(-50% + 160px * sin(var(--angle)))
+    ) scale(0.8);
+  }
+}
